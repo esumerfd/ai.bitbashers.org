@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light dark" />
+  <link rel="icon" href="data:," />
+  <title>Edward's Weekend</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --page: #f4eee5;
+      --surface: #fffaf3;
+      --surface-2: #efe7db;
+      --ink: #241f1a;
+      --muted: #6d6257;
+      --line: #d8cdbc;
+      --accent: #c6532e;
+      --accent-ink: #fff9f3;
+      --rain: #3d6f7c;
+      --rain-soft: #dbe9e9;
+      --sun: #e6a33a;
+      --shadow: 0 18px 50px rgba(74, 53, 32, .09);
+      --radius-lg: 28px;
+      --radius-md: 17px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --page: #191714;
+        --surface: #24201c;
+        --surface-2: #302b25;
+        --ink: #f6ecdf;
+        --muted: #c0b3a5;
+        --line: #4a4137;
+        --accent: #e8764f;
+        --accent-ink: #21130e;
+        --rain: #8fc2cb;
+        --rain-soft: #263a3d;
+        --sun: #f0b95f;
+        --shadow: 0 18px 50px rgba(0, 0, 0, .22);
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(180deg, color-mix(in srgb, var(--accent) 7%, var(--page)) 0, var(--page) 360px);
+      color: var(--ink);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button { font: inherit; }
+    a { color: inherit; }
+    .wrap {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 52px 0 46px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 32px;
+      padding: 6px 4px 32px;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      margin-bottom: 8px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(2.65rem, 6vw, 5.35rem);
+      line-height: .96;
+      letter-spacing: -.055em;
+      font-weight: 500;
+      max-width: 760px;
+    }
+    .date-line {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 650;
+    }
+    .snapshot {
+      max-width: 260px;
+      margin: 0 0 4px;
+      padding: 10px 13px;
+      border-left: 3px solid var(--accent);
+      color: var(--muted);
+      font-size: .82rem;
+      line-height: 1.4;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.45fr);
+      gap: 22px;
+      align-items: start;
+    }
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+    .weather {
+      border-radius: var(--radius-lg) var(--radius-lg) 11px var(--radius-lg);
+      overflow: hidden;
+    }
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      padding: 24px 24px 18px;
+    }
+    .panel-head h2 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      letter-spacing: -.025em;
+    }
+    .location {
+      color: var(--muted);
+      font-size: .84rem;
+      white-space: nowrap;
+    }
+
+    .now {
+      margin: 0 16px;
+      padding: 24px;
+      border-radius: 20px 20px 8px 20px;
+      background: var(--rain-soft);
+      color: var(--ink);
+    }
+    .now-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .condition {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      color: var(--rain);
+      font-size: 1.08rem;
+      font-weight: 750;
+    }
+    .weather-icon {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+    }
+    .temp {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 3.9rem;
+      line-height: 1;
+      letter-spacing: -.07em;
+    }
+    .temp sup {
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 1.2rem;
+      vertical-align: top;
+      position: relative;
+      top: .42rem;
+      letter-spacing: 0;
+    }
+    .details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid color-mix(in srgb, var(--rain) 35%, transparent);
+      color: var(--muted);
+      font-size: .86rem;
+    }
+    .alert-clear {
+      color: var(--rain);
+      font-weight: 700;
+    }
+
+    .forecast { padding: 10px 16px 18px; }
+    .forecast-row {
+      display: grid;
+      grid-template-columns: 112px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 16px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .forecast-row:last-child { border-bottom: 0; }
+    .forecast-day {
+      font-weight: 760;
+      font-size: .9rem;
+    }
+    .forecast-copy {
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.35;
+    }
+    .forecast-temp {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.4rem;
+      white-space: nowrap;
+    }
+    .rain-chance { color: var(--rain); font-weight: 750; }
+    .sunny { color: var(--sun); }
+
+    .events {
+      border-radius: 11px var(--radius-lg) var(--radius-lg) var(--radius-lg);
+      padding-bottom: 10px;
+    }
+    .events .panel-head { padding-bottom: 14px; }
+    .filters {
+      display: inline-flex;
+      gap: 4px;
+      padding: 4px;
+      border-radius: 999px;
+      background: var(--surface-2);
+    }
+    .filter {
+      border: 0;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: transparent;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 760;
+      cursor: pointer;
+    }
+    .filter[aria-pressed="true"] {
+      background: var(--accent);
+      color: var(--accent-ink);
+    }
+    .filter:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+      outline-offset: 2px;
+    }
+
+    .day-group { padding: 4px 22px 18px; }
+    .day-group[hidden] { display: none; }
+    .day-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 8px 0 6px;
+      color: var(--accent);
+      font-size: .86rem;
+      letter-spacing: .01em;
+      font-weight: 800;
+    }
+    .day-title::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: var(--line);
+    }
+    .event-list { list-style: none; padding: 0; margin: 0; }
+    .event {
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      padding: 15px 4px;
+      border-bottom: 1px solid var(--line);
+    }
+    .event:last-child { border-bottom: 0; }
+    .event-time {
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 760;
+      white-space: nowrap;
+    }
+    .event-name {
+      margin: 0 0 2px;
+      font-size: .98rem;
+      line-height: 1.25;
+      font-weight: 780;
+    }
+    .venue {
+      margin: 0;
+      color: var(--muted);
+      font-size: .81rem;
+      line-height: 1.35;
+    }
+    .price {
+      padding: 6px 9px;
+      border-radius: 7px;
+      background: var(--surface-2);
+      color: var(--ink);
+      font-size: .75rem;
+      font-weight: 740;
+      white-space: nowrap;
+    }
+
+    .assumption {
+      margin: 18px 4px 0;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 30px;
+      padding: 18px 4px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .75rem;
+    }
+    footer p { margin: 0; }
+    .sources { text-align: right; }
+
+    @media (max-width: 860px) {
+      .wrap { width: min(720px, calc(100% - 28px)); padding-top: 34px; }
+      .hero { grid-template-columns: 1fr; gap: 14px; padding-bottom: 24px; }
+      .snapshot { max-width: none; }
+      .dashboard { grid-template-columns: 1fr; }
+      .weather, .events { border-radius: 22px; }
+    }
+
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 20px, 500px); padding: 24px 0 32px; }
+      h1 { font-size: clamp(2.5rem, 15vw, 4rem); }
+      .date-line { font-size: .92rem; }
+      .panel-head { padding: 20px 18px 14px; align-items: center; }
+      .panel-head h2 { font-size: 1.35rem; }
+      .location { font-size: .76rem; }
+      .now { margin: 0 10px; padding: 20px 18px; }
+      .now-top { align-items: flex-start; }
+      .condition { gap: 8px; font-size: .95rem; }
+      .weather-icon { width: 34px; height: 34px; }
+      .temp { font-size: 3.2rem; }
+      .forecast { padding-inline: 10px; }
+      .forecast-row { grid-template-columns: 92px 1fr auto; gap: 8px; }
+      .forecast-copy { font-size: .8rem; }
+      .forecast-temp { font-size: 1.2rem; }
+      .events .panel-head { align-items: flex-start; gap: 10px; }
+      .filters { flex-shrink: 0; }
+      .filter { padding: 6px 9px; }
+      .day-group { padding: 4px 14px 14px; }
+      .event {
+        grid-template-columns: 68px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        padding: 14px 2px;
+      }
+      .price { grid-column: 2; justify-self: start; margin-top: -4px; }
+      footer { display: block; }
+      .sources { text-align: left; margin-top: 8px; line-height: 1.5; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <div>
+        <h1>Edward's Weekend</h1>
+        <p class="date-line">Sat Oct 10 – Sun Oct 11, 2026 · Cincinnati area</p>
+      </div>
+      <p class="snapshot">Static snapshot as of Saturday, October 10, 2026.</p>
+    </header>
+
+    <div class="dashboard">
+      <section class="panel weather" aria-labelledby="weather-title">
+        <div class="panel-head">
+          <h2 id="weather-title">Weather</h2>
+          <span class="location">Cincinnati, OH</span>
+        </div>
+
+        <div class="now">
+          <div class="now-top">
+            <div class="condition">
+              <svg class="weather-icon" viewBox="0 0 64 64" aria-hidden="true">
+                <path d="M20 41h25.5a10.5 10.5 0 0 0 .7-21A16 16 0 0 0 16 25.6 8 8 0 0 0 20 41Z" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m23 49-3 6m15-6-3 6m15-6-3 6" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+              <span>Light rain</span>
+            </div>
+            <div class="temp">59<sup>°F</sup></div>
+          </div>
+          <div class="details">
+            <span>Humidity 92%</span>
+            <span>Wind ENE 8 mph</span>
+            <span class="alert-clear">No weather alerts</span>
+          </div>
+        </div>
+
+        <div class="forecast" aria-label="Weekend forecast">
+          <div class="forecast-row">
+            <div class="forecast-day">Sat night</div>
+            <div class="forecast-copy">Showers · <span class="rain-chance">70%</span> rain · ~0.22 in</div>
+            <div class="forecast-temp">Low 56°</div>
+          </div>
+          <div class="forecast-row">
+            <div class="forecast-day">Sunday</div>
+            <div class="forecast-copy">Morning showers · <span class="rain-chance">40%</span> rain</div>
+            <div class="forecast-temp">High 67°</div>
+          </div>
+          <div class="forecast-row">
+            <div class="forecast-day">Sun night</div>
+            <div class="forecast-copy">Clearing</div>
+            <div class="forecast-temp">Low 54°</div>
+          </div>
+          <div class="forecast-row">
+            <div class="forecast-day">Monday</div>
+            <div class="forecast-copy"><span class="sunny">Partly cloudy</span></div>
+            <div class="forecast-temp">High 83°</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel events" aria-labelledby="events-title">
+        <div class="panel-head">
+          <h2 id="events-title">This weekend</h2>
+          <div class="filters" role="group" aria-label="Filter events by day">
+            <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+            <button class="filter" type="button" data-filter="sat" aria-pressed="false">Sat</button>
+            <button class="filter" type="button" data-filter="sun" aria-pressed="false">Sun</button>
+          </div>
+        </div>
+
+        <div class="day-group" data-day="sat">
+          <h3 class="day-title">Saturday, Oct 10</h3>
+          <ol class="event-list">
+            <li class="event">
+              <time class="event-time" datetime="2026-10-10T19:30">7:30 PM</time>
+              <div><p class="event-name">The Beach Boys</p><p class="venue">PNC Pavilion</p></div>
+              <span class="price">from $65</span>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-10T19:30">7:30 PM</time>
+              <div><p class="event-name">Karyn White: The Evolution Tour</p><p class="venue">Ludlow Garage</p></div>
+              <span class="price">from $72</span>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-10T21:00">9:00 PM</time>
+              <div><p class="event-name">Sploinky Rave (18+)</p><p class="venue">Bogart's</p></div>
+              <span class="price">from $44</span>
+            </li>
+          </ol>
+        </div>
+
+        <div class="day-group" data-day="sun">
+          <h3 class="day-title">Sunday, Oct 11</h3>
+          <ol class="event-list">
+            <li class="event">
+              <time class="event-time" datetime="2026-10-11T11:00">11:00 AM</time>
+              <div><p class="event-name">“Cruise In” Car Show</p><p class="venue">4521 Spring Grove Ave, Cincinnati</p></div>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-11T13:00">1:00 PM</time>
+              <div><p class="event-name">Cincinnati Bearcats Women's Volleyball vs. Iowa State</p><p class="venue">Fifth Third Arena</p></div>
+              <span class="price">from $16</span>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-11T14:00">2:00 PM</time>
+              <div><p class="event-name">Heist <span style="font-weight:500">(play)</span></p><p class="venue">Cincinnati Playhouse in the Park, Rouse Theatre</p></div>
+              <span class="price">from $128</span>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-11T19:00">7:00 PM</time>
+              <div><p class="event-name">Alabama</p><p class="venue">Truist Arena, Highland Heights, KY</p></div>
+              <span class="price">from $39</span>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-11T19:00">7:00 PM</time>
+              <div><p class="event-name">Here Come the Mummies</p><p class="venue">Bogart's</p></div>
+            </li>
+            <li class="event">
+              <time class="event-time" datetime="2026-10-11T19:30">7:30 PM</time>
+              <div><p class="event-name">Duane Betts &amp; Palmetto Motel</p><p class="venue">Ludlow Garage</p></div>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </div>
+
+    <p class="assumption">Cincinnati area is assumed from Edward's 513 area code.</p>
+    <footer>
+      <p>Weekend snapshot · Oct 10–11, 2026</p>
+      <p class="sources"><strong>Sources:</strong> weather.com, Ticketmaster, Discotech, cincinnati.events, allevents.in</p>
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      var buttons = document.querySelectorAll('.filter');
+      var groups = document.querySelectorAll('.day-group');
+      buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          var value = button.getAttribute('data-filter');
+          buttons.forEach(function (item) {
+            item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+          });
+          groups.forEach(function (group) {
+            group.hidden = value !== 'all' && group.getAttribute('data-day') !== value;
+          });
+        });
+      });
+    }());
+  </script>
+</body>
+</html>
