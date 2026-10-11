@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smokey Pork Chili Cook 🌶️</title>
+<style>
+  :root{
+    --bg:#14100c; --panel:#1f1812; --panel2:#26201900; --line:#3a2d20;
+    --txt:#f3e9dc; --dim:#c9b49a; --faint:#8a7560;
+    --heat:#e25822; --heat2:#ffb347; --green:#7fb069; --gold:#d9a441;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#2a1d12 0%,var(--bg) 60%) fixed,var(--bg);
+       color:var(--txt);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+       padding:0 0 4rem}
+  header{padding:2.2rem 1.2rem 1.2rem;text-align:center}
+  header .kicker{color:var(--heat2);letter-spacing:.18em;text-transform:uppercase;font-size:.72rem}
+  h1{margin:.35rem 0 .4rem;font-size:clamp(1.7rem,5vw,2.6rem)}
+  .sub{color:var(--dim);max-width:42rem;margin:0 auto}
+  .pill{display:inline-block;margin-top:.8rem;padding:.3rem .8rem;border:1px solid var(--gold);
+        border-radius:999px;color:var(--gold);font-size:.82rem}
+  main{max-width:46rem;margin:0 auto;padding:0 1.2rem;display:grid;gap:1.1rem}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem}
+  h2{margin:.1rem 0 .8rem;font-size:1.12rem;color:var(--heat2)}
+  h2 .n{background:var(--heat);color:#fff;border-radius:8px;font-size:.78rem;
+        padding:.1rem .5rem;margin-right:.5rem;vertical-align:2px}
+  label.date{display:flex;gap:.6rem;align-items:center;color:var(--dim);font-size:.92rem;margin-bottom:.6rem;flex-wrap:wrap}
+  input[type=date]{background:#14100c;color:var(--txt);border:1px solid var(--line);
+                   border-radius:8px;padding:.4rem .6rem;font-size:.95rem}
+  ol.tl{list-style:none;margin:0;padding:0;display:grid;gap:.55rem}
+  ol.tl li{display:grid;grid-template-columns:1.7rem 6.4rem 1fr;gap:.6rem;align-items:start;
+           padding:.55rem .6rem;border:1px solid var(--line);border-radius:10px;background:#1a140e}
+  ol.tl li.done{opacity:.55}
+  ol.tl li.done .step{text-decoration:line-through}
+  .chk{width:1.25rem;height:1.25rem;margin-top:.15rem;accent-color:var(--heat)}
+  .when{color:var(--heat2);font-size:.85rem;font-weight:600;white-space:nowrap}
+  .step b{display:block}
+  .step span{color:var(--dim);font-size:.9rem}
+  ul.shop{list-style:none;margin:0;padding:0;display:grid;gap:.35rem}
+  ul.shop li{display:flex;gap:.6rem;align-items:baseline;padding:.35rem .4rem;border-radius:8px}
+  ul.shop li.done{opacity:.5}
+  ul.shop li.done .item{text-decoration:line-through}
+  .item b{font-weight:600}
+  .item span{color:var(--dim)}
+  .grp{margin:.9rem 0 .35rem;color:var(--gold);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase}
+  .grp:first-child{margin-top:0}
+  .callout{border-left:3px solid var(--heat);padding:.5rem .8rem;background:#211711;border-radius:0 10px 10px 0;color:var(--dim)}
+  .callout b{color:var(--txt)}
+  .tips{display:grid;gap:.5rem;margin:0;padding:0;list-style:none}
+  .tips li{padding:.5rem .7rem;background:#1a140e;border:1px solid var(--line);border-radius:10px}
+  .tips li::before{content:"🔥 "}
+  footer{text-align:center;color:var(--faint);font-size:.8rem;margin-top:1.5rem;padding:0 1.2rem}
+  button.reset{background:none;border:1px solid var(--line);color:var(--faint);border-radius:8px;
+               padding:.35rem .8rem;font-size:.8rem;cursor:pointer}
+  button.reset:hover{color:var(--txt);border-color:var(--faint)}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Cook-day command center</div>
+  <h1>🌶️ Smokey Pork Chili Cook</h1>
+  <p class="sub">Mesquite-smoked pork chili with red beans (pinto, black &amp; dark kidney), finished in the crock pot. On the spicy side, obviously.</p>
+  <div class="pill">Planning — cook date lands after the wedding</div>
+</header>
+
+<main>
+  <section>
+    <h2><span class="n">1</span>Cook-day timeline</h2>
+    <label class="date">Cook day (Day 2):
+      <input type="date" id="cookdate">
+    </label>
+    <ol class="tl" id="timeline"></ol>
+    <p style="margin:.7rem 0 0"><button class="reset" id="resetTl">Reset timeline checks</button></p>
+  </section>
+
+  <section>
+    <h2><span class="n">2</span>Kroger shopping list</h2>
+    <div id="shop"></div>
+    <p style="margin:.8rem 0 0"><button class="reset" id="resetShop">Reset shopping checks</button></p>
+  </section>
+
+  <section>
+    <h2><span class="n">3</span>Propane &amp; smoke</h2>
+    <div class="callout">
+      <b>Fuel plan:</b> one full 20&nbsp;lb tank + one spare for insurance.<br>
+      The ~7-hour smoke at 250°F uses roughly a third of a full tank
+      (a 20&nbsp;lb tank holds ~430,000 BTU; the smoker draws ~15–20k BTU/hr → ~21–28 hours per tank).
+      Mesquite chips or chunks go in the smoker's chip box.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="n">4</span>Heat notes</h2>
+    <ul class="tips">
+      <li>Bloom the hot chili powder in the oil with the celery for 45–60 seconds <b>before</b> any liquid goes in — that's seasoned heat, not just hot.</li>
+      <li>Keep the jalapeño seeds in. All four of them.</li>
+      <li>Salt to taste at the very end, after the beans have had their hour.</li>
+    </ul>
+  </section>
+</main>
+
+<footer>Staged plan — timers get set on site once the cook date is locked in.</footer>
+
+<script>
+const STAGES=[
+ {t:"Day 1 · morning", d:-1, s:"Apply the dry rub", x:"Pork steaks into the fridge for a 24-hour rest."},
+ {t:"6:00 AM", d:0, s:"Pork out to room temp", x:"Two hours on the counter before it hits the smoke."},
+ {t:"8:00 AM", d:0, s:"Smoker to 250°F — pork on", x:"Mesquite in the chip box. Six hours of smoke."},
+ {t:"12:00 PM", d:0, s:"Vegetables on", x:"Roma tomatoes, onion, garlic heads, jalapeños (seeds in). Two hours."},
+ {t:"2:00 PM", d:0, s:"Into the crock pot", x:"Cube the pork, chop the veg, crock pot on high. Five hours. Bloom chili powder in oil with celery first."},
+ {t:"7:00 PM", d:0, s:"Stir in the beans", x:"Pinto, black, dark kidney. One more hour."},
+ {t:"8:00 PM", d:0, s:"Serve", x:"Salt to taste, garnish with green onions."}
+];
+const SHOP=[
+ ["Meat",[["Pork steaks, 4 lbs, cut 1½\" thick","or one pork shoulder/butt, sliced into steaks"]]],
+ ["Dry rub — pantry check first",["Kosher salt, 1 tbsp + extra to taste|","Paprika, 1 tbsp|","Black pepper, 1 tbsp|","Garlic powder, ½ tbsp|","Onion powder, ½ tbsp|","White pepper, 2 tsp|"]],
+ ["Smoked vegetables",["Roma tomatoes, 6|","White onion, 1 large|","Garlic, 2 heads|","Jalapeños, 4 large|keep the seeds — spicy side"]],
+ ["Crock pot",["Vegetable oil, 3 tbsp|","Celery, 1 bunch|need 3 ribs","Tomato paste, 1 small can|need ¼ cup","Pork stock, 32 oz carton|need 4 cups","Hot chili powder, 2 tsp|bloom in oil 45–60 sec"]],
+ ["Beans & finish",["Pinto beans, 1 can (15 oz)|","Black beans, 1 can (15 oz)|","Dark kidney beans, 1 can (15 oz)|the red bean","Green onions, 1 bunch|garnish"]],
+ ["Smoker fuel",["Mesquite wood chips or chunks|for the chip box","Propane: 1 full 20 lb tank + 1 spare|~⅓ tank per cook — spare is insurance"]]
+];
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},
+             set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+function fmtDate(base,offset){
+  if(!base) return null;
+  const d=new Date(base+"T12:00:00"); d.setDate(d.getDate()+offset);
+  return d.toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+}
+function renderTimeline(){
+  const base=$("cookdate").value, done=store.get("chiliTl",[]);
+  $("timeline").innerHTML=STAGES.map((st,i)=>{
+    const dt=fmtDate(base,st.d);
+    return `<li class="${done.includes(i)?"done":""}">
+      <input type="checkbox" class="chk" data-i="${i}" ${done.includes(i)?"checked":""}>
+      <span class="when">${dt?dt+"<br>":""}${st.t}</span>
+      <span class="step"><b>${st.s}</b><span>${st.x}</span></span></li>`;
+  }).join("");
+  document.querySelectorAll("#timeline .chk").forEach(c=>c.onchange=()=>{
+    let d=store.get("chiliTl",[]); const i=+c.dataset.i;
+    d=c.checked?[...new Set([...d,i])]:d.filter(x=>x!==i); store.set("chiliTl",d); renderTimeline();
+  });
+}
+function renderShop(){
+  const done=store.get("chiliShop",[]);
+  let idx=0;
+  $("shop").innerHTML=SHOP.map(([g,items])=>
+    `<div class="grp">${g}</div><ul class="shop">`+items.map(raw=>{
+      const [name,note]=(raw+"|").split("|").map(s=>s.trim()); const i=idx++;
+      return `<li class="${done.includes(i)?"done":""}">
+        <input type="checkbox" class="chk" data-i="${i}" ${done.includes(i)?"checked":""}>
+        <span class="item"><b>${name}</b>${note?` <span>— ${note}</span>`:""}</span></li>`;
+    }).join("")+`</ul>`).join("");
+  document.querySelectorAll("#shop .chk").forEach(c=>c.onchange=()=>{
+    let d=store.get("chiliShop",[]); const i=+c.dataset.i;
+    d=c.checked?[...new Set([...d,i])]:d.filter(x=>x!==i); store.set("chiliShop",d); renderShop();
+  });
+}
+$("cookdate").value=store.get("chiliDate","");
+$("cookdate").onchange=e=>{store.set("chiliDate",e.target.value);renderTimeline();};
+$("resetTl").onclick=()=>{store.set("chiliTl",[]);renderTimeline();};
+$("resetShop").onclick=()=>{store.set("chiliShop",[]);renderShop();};
+renderTimeline(); renderShop();
+</script>
+</body>
+</html>
