@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weather — ai.bitbashers.org</title>
+<style>
+  :root{
+    --bg:#14100c; --panel:#1f1812; --line:#3a2d20;
+    --txt:#f3e9dc; --dim:#c9b49a; --faint:#8a7560;
+    --heat:#e25822; --heat2:#ffb347; --gold:#d9a441;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 4rem}
+  header{padding:1.6rem 1.2rem .6rem;max-width:46rem;margin:0 auto}
+  header a.back{color:var(--faint);text-decoration:none;font-size:.9rem}
+  header a.back:hover{color:var(--txt)}
+  header h1{margin:.5rem 0 .2rem;font-size:clamp(1.7rem,5vw,2.4rem)}
+  header .sub{color:var(--dim);margin:0}
+  main{max-width:46rem;margin:0 auto;padding:1rem 1.2rem 0;display:grid;gap:1.1rem}
+  section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.1rem 1.2rem}
+  h2{margin:.1rem 0 .7rem;font-size:1.1rem;color:var(--heat2)}
+  .now{display:flex;align-items:baseline;gap:.8rem}
+  .now .temp{font-size:3rem;font-weight:700}
+  .now .cond{color:var(--dim)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(8rem,1fr));gap:.6rem;margin-top:.8rem}
+  .stat{background:#1a140e;border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem}
+  .stat .k{color:var(--faint);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em}
+  .stat .v{font-weight:600}
+  .day{display:flex;justify-content:space-between;gap:1rem;padding:.55rem 0;border-top:1px solid var(--line)}
+  .day:first-of-type{border-top:0}
+  .day .d{font-weight:600}
+  .day .f{color:var(--dim);text-align:right}
+  footer{text-align:center;color:var(--faint);font-size:.8rem;margin-top:1.5rem;padding:0 1.2rem}
+</style>
+</head>
+<body>
+  <header>
+    <a class="back" href="index.html">← Home</a>
+    <h1>🌤️ Cincinnati weather</h1>
+    <p class="sub">Snapshot — Sunday, October 11, 2026. Source: weather.com.</p>
+  </header>
+  <main>
+    <section>
+      <h2>Right now</h2>
+      <div class="now"><span class="temp">62°F</span><span class="cond">Cloudy</span></div>
+      <div class="grid">
+        <div class="stat"><div class="k">Humidity</div><div class="v">91%</div></div>
+        <div class="stat"><div class="k">Wind</div><div class="v">NNE 6 mph</div></div>
+        <div class="stat"><div class="k">Air quality</div><div class="v">33 · Good</div></div>
+        <div class="stat"><div class="k">Alerts</div><div class="v">None</div></div>
+      </div>
+    </section>
+    <section>
+      <h2>Next couple days</h2>
+      <div class="day">
+        <span class="d">Today, Oct 11</span>
+        <span class="f">Morning showers, then cloudy · High 66°F / Low 55°F · Rain 60%</span>
+      </div>
+      <div class="day">
+        <span class="d">Mon, Oct 12</span>
+        <span class="f">Partly cloudy · High 84°F / Low 64°F · Rain 10%</span>
+      </div>
+    </section>
+  </main>
+  <footer>Static snapshot — check your weather app for the live forecast.</footer>
+</body>
+</html>
