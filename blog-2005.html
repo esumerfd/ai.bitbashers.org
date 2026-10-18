@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico">
+<title>Blog 2005 — ai.bitbashers.org</title>
+<style>
+:root{
+    --bg:#14100c; --panel:#1f1812; --line:#3a2d20;
+    --txt:#f3e9dc; --dim:#c9b49a; --faint:#8a7560;
+    --heat:#e25822; --heat2:#ffb347; --gold:#d9a441;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);
+       font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .banner{background:radial-gradient(900px 420px at 50% -10%,#3a2413 0%,#1c130b 55%,#14100c 100%);
+          border-bottom:1px solid var(--line);
+          padding:3.2rem 1.2rem 2.4rem;text-align:center}
+  .banner .kicker{color:var(--heat2);letter-spacing:.22em;text-transform:uppercase;font-size:.72rem}
+  .banner h1{margin:.4rem 0 .3rem;font-size:clamp(2rem,6vw,3.2rem);letter-spacing:-.01em}
+  .banner h1 .dot{color:var(--heat)}
+  .banner p{color:var(--dim);margin:.3rem auto 0;max-width:34rem}
+  .banner .date{display:inline-block;margin-top:1rem;padding:.3rem .9rem;border:1px solid var(--line);
+                border-radius:999px;color:var(--faint);font-size:.82rem}
+  main{max-width:46rem;margin:0 auto;padding:2rem 1.2rem 4rem}
+  .back{display:inline-block;margin-bottom:1.4rem;color:var(--heat2);text-decoration:none;font-weight:600}
+  .back:hover{text-decoration:underline}
+  .years{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 2.2rem}
+  .years a{padding:.3rem .85rem;border:1px solid var(--line);border-radius:999px;
+           color:var(--dim);text-decoration:none;font-size:.85rem}
+  .years a:hover{border-color:var(--heat);color:var(--txt)}
+  .years a.now{background:var(--heat);border-color:var(--heat);color:#14100c;font-weight:700}
+  .post{background:var(--panel);border:1px solid var(--line);border-radius:16px;
+        padding:1.6rem 1.5rem;margin-bottom:1.6rem}
+  .post h2{margin:0 0 .3rem;font-size:1.35rem;line-height:1.3}
+  .post .meta{color:var(--faint);font-size:.85rem;margin-bottom:.5rem}
+  .post .tags{margin-bottom:.8rem}
+  .post .tag{display:inline-block;background:#2a2015;border:1px solid var(--line);border-radius:999px;
+             padding:.1rem .6rem;font-size:.75rem;color:var(--dim);margin:0 .3rem .3rem 0}
+  .post .body{color:var(--txt)}
+  .post .body img{max-width:100%;height:auto;border-radius:8px}
+  .post .body a{color:var(--heat2)}
+  .post .body blockquote{border-left:3px solid var(--heat);margin:1rem 0;padding:.4rem 1rem;
+                         background:#241a10;border-radius:0 8px 8px 0}
+  .post .orig{margin-top:1rem;font-size:.85rem}
+  .post .orig a{color:var(--faint);text-decoration:none}
+  .post .orig a:hover{color:var(--heat2)}
+  footer{text-align:center;color:var(--faint);font-size:.8rem;padding:0 1.2rem 2rem}
+</style>
+</head>
+<body>
+  <div class="banner">
+    <div class="kicker">ai.bitbashers.org</div>
+    <h1>Blog 2005<span class="dot">.</span></h1>
+    <p>BitBasher posts from 2005.</p>
+    <div class="date">10 posts</div>
+  </div>
+  <main>
+    <a class="back" href="index.html">&larr; Home</a>
+    <nav class="years"><a href="blog.html">2021</a><a href="blog-2018.html">2018</a><a href="blog-2016.html">2016</a><a href="blog-2015.html">2015</a><a href="blog-2013.html">2013</a><a href="blog-2012.html">2012</a><a href="blog-2010.html">2010</a><a href="blog-2009.html">2009</a><a href="blog-2008.html">2008</a><a href="blog-2007.html">2007</a><a href="blog-2006.html">2006</a><a class="now" href="blog-2005.html">2005</a><a href="blog-2004.html">2004</a></nav><article class="post">
+  <h2>Java Closure Chaining</h2>
+  <div class="meta">December 28, 2005</div>
+  <div class="tags"><span class="tag">java</span></div>
+  <div class="body">I am playing with closures in java. Not as simple as the Ruby counter parts but a benefit to our programming arsenal I think.<br /><br />I have come to realize two new things from this experience.<br /><br /><span style="font-weight: bold;font-size:130%;">Testability</span><br /><br />Compare<br /><pre><br />    Iterator iter = list.iterator();<br />    while (iter.hasNext())<br />    {<br />        A a = (A)iter.next();<br />        do something<br />    }<br /></pre><br />With<br /><pre><br />    ListTools.each(list, new ClosureObject()<br />    {<br />        public void call(Object a_object)<br />        {<br />            A a = (A)a_object;<br />            do something<br />        }<br />    });<br /></pre><br />How many pre-bugs do you see in each version. Both have 4 lines of code but the first requires 3 dot references which adds opportunities for those methods to do something unexpected.<br /><br />Because of the the "final" requirement in java I found this construct to be a rarity. Instead we need something like this.<br /><pre><br />    ListItemMunger munger = new ListItemMunger();<br />    ListTools.each(list, munger);<br />    System.out.println(munger.something());<br /><br />    class ListItemMunger implements ClosureObject()<br />    {<br />        public void call(Object a_object)<br />        {<br />            A a = (A)a_object;<br />            do something<br />        }<br />    });<br /></pre><br />The most significant benefit with using Closures in java is that the loop-core is removed and is more testable than ever before.<br /><pre><br />    public void testLoopCore()<br />    {<br />        ListItemMunger munger = new ListItemMunger();<br />        munger.call(new SomeObject());<br />        munger.call(new SomeObject());<br />        munger.call(new SomeObject());<br />        assertTrue(munger.something());<br />    }<br /></pre><br />Now that I have classes that scan directories recursively, scan the files within them and then the line of text within each file this testability feature has been invaluable.<br /><br /><span style="font-weight: bold;font-size:130%;">Closure Chaining</span><br /><br />So I can scan directories, files and lines within files. How do I do that with these closure things.<br /><pre><br />      DirectoryRecurseLookup.each("my path", new ClosureFile()<br />      {<br />          public void call(File a_directory)<br />          {<br />              FileLookup.each(a_directory, new ClosureFile()<br />              {<br />                  public void call(File a_file)<br />                  {<br />                      StreamLineLookup.each(a_file, new ClosureIntString()<br />                      {<br />                          public void call(int a_lineNumber, String a_line)<br />                          {<br />                              System.out.println(a_lineNumber + " : " + a_line);<br />                          }<br />                      }<br />                  }<br />              }<br />          }<br />      });<br /></pre><br /><br />Well that's a lot of nesting but relatively simple syntacticly, no pre-bugs waiting to pop out at me. My first version took each of the closures into a separate class to simplify the code and make it more testable and it all worked fine.<br /><br />Then I realized what I was doing wrong. I am just chaining closures so why can't the closures encapsulate that.<br /><pre><br />        StreamLineLookup lineScanner = new StreamLineLookup();<br />        FileLookup fileScanner = new FileLookup(lineScanner);<br />        DirectoryRecurseLookup dirScanner = new DirectoryRecurseLookup(fileScanner);<br /><br />        DirectoryRecurseLookup.each("my path", dirScanner);<br /></pre><br />So as an example:<br /><pre><br />        class DirecotryRecurseLookup implements ClosureFile<br />        {<br />            public static each(String a_path, ClosureFile a_closure)<br />            {<br />                // find files and pass them to the closure<br />            }<br /><br />            private ClosureFile m_closure;<br />            public DirectoryRecurseLookup(ClosureFile a_closure)<br />            {<br />                m_closure = a_closure;<br />            }<br /><br />            public void call(File a_directory)<br />            {<br />                each(a_directory, m_closure);<br />            }<br />        }<br /></pre></div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/12/java-closure-chaining.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>XP Cincinnati - Frappr</h2>
+  <div class="meta">October 27, 2005</div>
+  <div class="tags"><span class="tag">agile</span></div>
+  <div class="body">I am probably late to the party but this Frappr idea rocks. I created a frappr map for XP Cincinnati to see if we can get an idea of how spreadout we are.<br /><br />    <a href="http://www.frappr.com/xpcincinnati">Frappr XP Cincinnati</a></div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/10/xp-cincinnati-frappr.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Pre-bug - Variable Notation</h2>
+  <div class="meta">September 7, 2005</div>
+  <div class="tags"><span class="tag">programming</span></div>
+  <div class="body">A prebug, is a piece of code that is about to become a bug.<br /><br />This is much like Martin Fowler's code smells (http://www.martinfowler.com/books.html#refactoring) but his writing comes from the perspective of how to find and recognize bad code and refactor it to improve it. The pre-bug concept is more like patterns for defensive coding strategies.<br /><br />I coined the phrase prebug to describe code that you are typing in that will very soon be re-classified as a bug. Hopefully the test turns your prebug into a bug by failing but what if you can work out a way to type in your code that will prevent you from entering pre-bugs in the first place.<br /><br />For example, one of the old C bugs that was so common was the single-equal-if problem.<br /><pre><br />    if (a = 1) { printf("I think its one but who really knows"); }<br /></pre><br />For those unfamiliar with C, this statement would assign 1 to a and return true, always.<br /><br />As a developer is typing in this code they may not be considering the possible bugs they are generating. So what if we retrained ourselves to always type this.<br /><pre><br />    if (1 = a) { printf(("I know its one"); }<br /></pre><br />In this case the compiler will thrown an error saying that you can not assign a to the constant 1. What we have done here is slightly change the way we type in code and avoided a nasty bug from passing on down the development stream, potentially to production.<br /><br />Here is another prebug idea that I want you to suggest solutions for. How would you enter this code to reduce the likelihood of the bug getting passed your ever vigilant eyes?<br /><pre><br />    class Counter extends Thread<br />    {<br />        private static int counter = 0;<br />        public void run()<br />        {<br />            while (counter < 10)<br />            {<br />                counter++;<br />                doSomething();<br />            }<br />        }<br />    }<br /></pre><br />The bug is that the counter is static and is able to run inside a thread, clealey a problem in this case. The same problem can occur with any static variable even its not so obviously in a class intended for multi-threaded operation.<br /><br />The best solution I have found for spotting this kind of bug as I am entering it is to classify the variable names by scope and lifetime. We have all seem these notations in coding standards docs for years but I think the application of these ideas for the specific purpose of preventing bugs is not so commonly realized.<br /><br />The java prefixes I use for these problems are:<br /><pre><br />    statics: s_<br />    instance: m_<br />    arguments: a_<br /></pre><br />With the statics, instance and argument variables clearly identify to the reading eye what the scope of the variables are. The previous code should be entered like this.<br /><pre><br />    class Counter extends Thread<br />    {<br />        private static int s_counter = 0;<br />        public void run()<br />        {<br />            while (s_counter < 10)<br />            {<br />                s_counter++;<br />                doSomething();<br />            }<br />        }<br />    }<br /></pre><br />Eclipse offers auto-prefixing so all of its code generation features work once you have configured these notations.</div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/09/pre-bug-variable-notation.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Emailing to a Blog</h2>
+  <div class="meta">August 23, 2005</div>
+  <div class="tags"><span class="tag">life</span></div>
+  <div class="body"><DIV><FONT face=Arial size=2>This is an experiment to see if this is a worth  while feature. I am a little concerned that I will want to post too much crap.  The editing process is important and slowing my posting down to 1 or so a month  keeps things sane.</FONT></DIV> <DIV><FONT face=Arial size=2></FONT>&nbsp;</DIV> <DIV><FONT face=Arial size=2>Anyway, one can but try the new processes and see  what happens.</FONT></DIV> <DIV>&nbsp;</DIV></div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/08/emailing-to-blog.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Decoupled UI</h2>
+  <div class="meta">March 29, 2005</div>
+  <div class="tags"><span class="tag">.net</span></div>
+  <div class="body"><span style="color: rgb(51, 102, 255);font-size:130%;" >My original question:</span><br /><br />I want to be able to do this but it will not compile because the EventHandler does not have a no arg constructor.<br />  <blockquote><br />  IDictionary collection = new Hashtable();<br />  collection.Add("myevent", new EventHandler());<br />  </blockquote><br />A single event has the syntactic oddities<br />  <blockquote><br />  event EventHandler fred;<br />  fred += new EventHandler(this.SomeMethod);<br />  fred("x", eventArgs);</blockquote><br />So how do I add fred to a collection so that I can do this<br />  <blockquote>collection["myevent"] += new EventHandler(this.SomeMethod);</blockquote><br /><br /><span style="color: rgb(51, 102, 255);font-size:130%;" >The answer:</span><br /><br />I found the answer so here it is. Thanks to Mike Wood for his expertise.<br /><br />The first and simple answer is that you can't do what I was asking. Events can't be constructed in the way that we would expect so can not be stored in a hashtable.<br /><br /><strong>Background</strong><br /><br />The new information that I learned was about multicast delegates. These are the normal delegates that are created for us in our WinForms apps but they actually have the ability to store more than one callback.<br /><br />It turns out that an event is completely unnecessary when declaring a callback. MSDN says that its just a safer syntactic representation of a multicast delegate (<a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp04192001.asp">An Event to Remember</a>).<br /><blockquote>    delegate void MyCallback();<br />  MyCallback fred;<br />  fred += new MyCallback(this.SomeMethod);</blockquote>This will fail to compile because fred is not assigned and you should not += to it.<br /><blockquote>    delegate void MyCallback();<br />  MyCallback fred;<br /><br />  fred = new MyCallback(this.SomeMethod);<br />  fred += new MyCallback(this.SomeMethod);<br /></blockquote>This will work because fred is first assigned with a delegate and then one more is added. Note that we can not re-assign a callback to the delegate to clear all existing delegates. This is the danger of the delegate syntax. This is now a multi-cast delegate since fred contains multiple callbacks that can all be invoked in turn by:<br />  <blockquote>fred();</blockquote>So the alternate syntax allows for the += in any situation. By placing the keyword "event" in front of your delegate declaration you allow the += to always work. This doesn't prevent you from doing an assignment so its not much protection but it does mean that whenever you see an assignment to an event you should be suspicious.<br /><blockquote>    delegate void MyCallback();<br />  event MyCallback fred;<br />  fred += new MyCallback(this.SomeMethod);<br /></blockquote><br /><strong>Problem</strong><br /><br />What I wanted was a single class that could manage a set of delegates, categorized by data type, that could be subscribed to and published from different areas of your code to ensure that there was no compile time coupling between them.<br /><br />Example of the problem:<br /><pre><br />class A<br />{<br />    private B b;<br /><br />    public A()<br />    {<br />        b = new B();<br />    }<br /><br />    public OnButtonPressed()<br />    {<br />        b.MakeBread();<br />    }<br />}<br /><br />class B<br />{<br />    public MakeBread()<br />    {<br />        Console.Write("rise rise rise");<br />    }<br />}<br /></pre><br />Notice how A has a reference to B. This means that when I want C to do something when the ButtonPressed event occurs I have to edit A to add a new reference. Also, If I want to add another layer between A and B then I have to change A to make the new reference and move the B reference into the new location. Lots of code changing is bad from a maintenance and testing perspective.<br /><br />Design principle. Open Close Principle<br /><br />   "Software entities (classes, modules, functions, etc.) should be open for extension, but closed for modification."<br /><br />  <a href="http://c2.com/cgi/wiki?OpenClosedPrinciple">C2 Wiki - OpenClosedPrinciple</a><br /><br />In this example I had to change lots of existing code to rearrange my structure. This is very common in UI applications as you move the UI around the elements of the UI have to be moved between source files and the call backs have to be moved as well.<br /><br /><strong>Solution</strong><br /><br />The solution to the original problem is to put a delegate in the hashtable and then add additional delegates to the same element. No events were used during the making of this code.<br /><br />I wrapped this in a class called PubSub with two static methods Subscribe and Publish (<a href="http://bitbashers.dyndns.org:8081/blog-files/Commons.zip">Download Solution</a>)<br /><br />Example:<pre><br />class A<br />{<br />    public A()<br />    {<br />    }<br /><br />    public OnButtonPressed()<br />    {<br />        PubSub.Publish(new UiEventButtonPressed());<br />    }<br />}<br /><br />class B<br />{<br />    public B()<br />    {<br />        PubSub.Subscribe(typeof(UiEventButtonPressed), new EventHandler(MakeBread));<br />   }<br /><br />    public MakeBread(object sender, EventArgs args)<br />    {<br />        Console.Write("rise rise rise");<br />    }<br />}</pre><br />Notice now that class A doesn't know who is reacting to the ButtonPressed event, all its doing it notifying the world that something happened. Class B on the other hand is a simple standalone class that knows it has to do something when the button is pressed so subscribes for that event.<br /><br />I could now write a class C that subscribed for the same event without changing any existing code at all. This is a massive maintenance and test advantage. Imagine being able to extend an existing system by dropping a new dll into the deployment. Sweetness.<br /><br />This type of abstraction also offers extension advantages. Imagine the day when your UI gets so slow that you have to start backgrounding some of the actions. You can add extend your PubSub class to submit all the callbacks on background threads.<br /><br />What about the idea of distributing your application. Say you want a background service to manage the synchronization of data from your UI to some external storage. You could extend PubSub to post events across process or machine boundaries and plug into your existing application without changing it.<br /><br />Obviously, I am simplifying this a little but the abstractions are the key to making your system flexible enough to be tolerant of these kinds of changes.</div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/03/decoupled-ui.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>CinDnug 2-20-05</h2>
+  <div class="meta">February 18, 2005</div>
+  <div class="tags"><span class="tag">.net</span></div>
+  <div class="body">Doug Rohrer, of Avanade Inc employ, presented an overview of the Microsoft Enterprise Library (entlib).<br /><br />Apparently Avanade are the original writers of these libraries as the copyright at the top of the source indicates. Oh did I mention that we get the source? The license allows you to modify for your own use but you can not redistribute your alternations and you must leave any existing copyright notice at the top if you do not change the code.<br /><pre><br />   // Copyright © Microsoft Corporation. All rights reserved.<br />   // Adapted from ACA.NET with permission from Avanade Inc.<br />   // ACA.NET copyright © Avanade Inc. All rights reserved.<br /></pre><br />This is a library of "application blocks" that are intended to help developers with the basic plumbing of an application. A block is just a subset of a library which is akin to an assembly. In java terms its just a jar. I don't know why "block" replaced "library".<br /><br />Doug writes about the entlib in his blog.<br /><pre><br />   <a href="http://weblogs.asp.net/drohrer">Doug Rohrer's Blog</a><br /></pre><br />Download it here after some registration steps:<br /><pre><br />   <a href="http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dnpag2/html/entlib.asp">Microsoft Enterprise Library</a><br /></pre><br />I am afraid that I arrived 30 minutes late so missed a couple of the initial block descriptions but the website doc is good. These are the blocks in the entlib<br /><br />o    Configuration Application Block<br />o    Data Access Application Block<br />o    Caching Application Block<br />o    Exception Handling Application Block<br />o    Logging & Instrumentation Application Block<br />o    Cryptography Application Block<br />o    Security Application Block<br /><br />One the most interesting features of this library is that it comes with source. When you download it you get a selfextracting exe that unloads the source to your disk and, with compile checkbox checked, proceeds to compile the library in place. Having the source available makes this a far more valuable resource since we can not only use it but also learn from the code.<br /><br />All the libraries use the Configuration block and most use the Logging block so there is a good synergy between them all. They all have good factory abstractions so its simple to replace the various providers with your own implementations. Each folder in the source contains a Test directory where NUnit tests sit.<br /><br />Here is a simple sample of each.<br /><br /><h3>Logging:<br /></h3><pre>    Logger.Write("My message", "someMessageCategory");<br /></pre>Each write can optionally, specify a category that can be configured in the configuration file and drives where the message is written to.<br /><br />There is no method level distinction between error, warning, info and debug messages. There is also no class level message filtering. You could use the category names for either but not both.<br /><br />This being a class level API, instead of instance level, its flexibility is limited. A simple improvement would be to allow us to create our own reference to the logger and then we can choose to make it an instance or static property.<br /><br />So, compared to Log4Net (http://logging.apache.org/log4net/), this solution is not adequate.<br /><br /><h3>Configuration:<br /></h3><pre>    settings = (MySettingsType)ConfigurationContext.GetConfiguration("section name");<br />   settings.MyProperty<br /></pre>The advantage of this package over the built-in App.config is that you can select the storage type. This seems like a good solution for .Net app config loading.<br /><br /><h3>Data Access:<br /></h3><pre>     myDataSet = DatabaseFactory.CreateDatabase("Sales").<br />                               ExecuteDataSet("GetOrdersByCustomer", myCustomerId );<br /></pre>I missed the comments on this one but the code snippet looks simple enough. I asked Doug after the presentation about support for Transactions but he didn't have any concrete information.<br /><br />Longer term I am more interested in libraries like NHibernate (http://nhibernate.sourceforge.net/) that support a full Object/Relational mapping solution. Then you can look into Spring for .Net (http://sourceforge.net/projects/springnet/) and abstract your transaction management out of your code completely.<br /><br /><h3>Caching:<br /></h3><pre>    factory = new CacheManagerFactory(Context);<br />   cacheMgr = factory.GetCacheManager("SmallInMemoryPersistence");<br /><br />   cacheMgr.Add("key", "cache");<br />   cacheMgr.Remove("key");<br /><br />   cacheMgr.Dispose();<br /></pre>The location of a cache can be configured as in-memory or in-database so it can be used within a clustered environment. It supports various cache ageing algorithms that allow you to control how stale you data gets.<br /><br />I am unsure about this library. With a IDictionary type interface you are limited in the types of data that you can cache. Not that you can't store anything but that you can't get it back as easily. Say I wanted to store a row from a dataset, what would I use for a key? It would have to be the unique key to the row but if that is a compound key I would have to come up with a string representation of that information.<br /><br />I am sure that there are some good uses this library can be put to but with caching being such a complex layer I am not sure that it is flexible enough for the more complex applications.<br /><h3>Exception Handling:<br /></h3><pre>    catch (Exception ex)<br />   {<br />       bool shouldRethrow = ExceptionPolicy.HandleException(ex, "policyname");<br />       if (shouldRethrow)<br />       {<br />           throw ex;<br />       }<br />   }<br /></pre>The goal here is to centralize the processing from all our catch blocks. The HandleException method reads configuration where a set of exception handlers are configured. You can relate a list of handlers to a policyname that can log, write to the event log or add you own custom handler.<br /><br />The biggest downside to this approach is that you loose all your context logging. Most exception handlers are going to format a message that includes information from the local context that will help debug the problem. The only way I can see to add this feature and still use this exception handler is to wrap the thrown exception in your own exception and pass that in.<br /><pre>        MyException mx = new MyException(ex, "Context specific message");   <br />       bool shouldRethrow = ExceptionPolicy.HandleException(mx, "policyname");<br /></pre>I question whether the function that I want to perform in my exception handlers should be abstracted to the configuration file level. Certainly, common code should be extracted into some application specific class but to standardize that and push it all the way to a config file seems unnecessary and not very useful.<br /><h3>Crypto:<br /></h3><pre>    Cryptographer.EncryptSymmetric("dpapiSymmetric1", "plain text");<br />   Cryptographer.DecryptSymmetric("dpapiSymmetric1", encrypted,);<br /><br />   Cryptographer.CreateHash(hashInstance, plainTextString);<br /></pre>Doug also demoed encrypting with sha1 and it was as simple. This is going to be really easy and will, hopefully, ensure that every programmer gets comfortable with this subject matter and uses it. There is way too much data out there that is not secure because the average programmer doesn't know how to use the cryptography api.<br /><h3>Security:<br /></h3><pre>    factory = new AuthenticationProviderFactory();<br />   IAuthenticationProvider provider = factory.GetAuthenticationProvider();<br /><br />   if (provider.Authenticate(new  NamePasswordCredential("Fred", "password"), out identity))<br />   {<br />       // Woohoo<br />   }<br /><br />   factory = new AuthorizationProviderFactory();<br />   provider = factory.GetAuthorizationProvider();<br /><br />   if (provider.Authorize(principle, context))<br />   {<br />       // Woohoo<br />   }<br /></pre>A simple authorization and authentication abstraction that will simplify your login pages and access checks in your code. You can plug in your own providers and perform application specific checks as needed.<br /><h3>Conclusion:<br /></h3>Some of these seem to be very useful libraries that I expect to start using in my current project.<br /><br />A possible improvement that could be made to the distribution would be to formalize the mock classes that are used. The "Test" folders are full of mock classes that help prove that various pieces of functionality work. When I am testing my code I will have to concoct some mock configuration to drive the various paths though my code. If the library supplied some mock implementations it would save me from writing my own.<br /><br />Thanks Doug for a great presentation.</div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/02/cindnug-2-20-05.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Cold basement</h2>
+  <div class="meta">February 11, 2005</div>
+  <div class="tags"><span class="tag">life</span></div>
+  <div class="body">My office is in my basement. Yes, a little corner of a cold dark hole in the ground. Winter makes it intensley cold with one electric heater making my body hot on one side and leaving the other blue.<br /><br />Still, it beats trecking through the snow to a small dark cube.<br /><br />Cincinnati doesn't get too cold in the winter, not compared to the more northern areas. However, this is my home and that gives me the right to whine about it a little.<br /><br />The view from our back window is nice after a fresh snow. The last snow was windless so produced some excellent depth on the individual branches.<br /><br /><p align="center"><br /><a href="http://photos1.blogger.com/img/104/3532/640/BackOfHouse2_half.jpg"><img style="border: 1px solid rgb(0, 0, 0); margin: 2px;" src="http://photos1.blogger.com/img/104/3532/320/BackOfHouse2_half.jpg" border="0" /></a><br /></p></div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/02/cold-basement.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Referencing EXE assemblies in VS.net</h2>
+  <div class="meta">February 6, 2005</div>
+  <div class="tags"><span class="tag">.net</span></div>
+  <div class="body">The problem, as discussed in the <a href="http://groups.yahoo.com/group/cindnug/">CinDnug</a> use group, was that a VS.net project that contains tests can not reference a project that generates an exe. The only design solution is to make the exe code a one liner that calls a main dll but this has quite an impact on other design decisions.
+<br />
+<br />When you try to add a reference from a dll project to an exe project in VS.net you get a warnings stating that the reference target has to be a dll. You can solve this problem with some judicious editing of your .csproj file.
+<br />
+<br />Editing your .csproj file will show references declared like this
+<br /><pre>
+<br />    &lt;Reference
+<br />        Name = "ProtoTabBack"
+<br />        Project = "{6292AE62-0514-40F7-99C0-C2C181BF9A15}"
+<br />        Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+<br />    /&gt;
+<br />    &lt;Reference
+<br />        Name = "TabulatorFront"
+<br />        AssemblyName = "TabulatorFront"
+<br />        HintPath = "..\TabulatorFront\bin\debug\TabulatorFront.exe"
+<br />    /&gt;
+<br /></pre>
+<br />Note there are two types of declarations here. The first type uses the package project guid that you can find in your .sln file in the following format. The first guid is the Package and the second the Project.
+<br /><pre>
+<br />    Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TabulatorFront",     
+<br />            "TabulatorFront\TabulatorFront.csproj",
+<br />            "{DD6F402B-1823-489F-AC6C-B9B8FE18391D}"
+<br />         ProjectSection(ProjectDependencies) = postProject
+<br />        EndProjectSection
+<br />    EndProject
+<br /></pre>
+<br />Using this "project reference" in your .csproj file results in VS.net flagging the reference with a little yellow triangle and saying that it has to be a .dll file.
+<br />
+<br />However, using the second Reference format and referring to the exe file directly works. I am now able to code to and link my tests with the exe project code, utilize existing test infrastructure to write tests against UI code and keep my test code out of my production deployments.
+<br />
+<br />Thanks <a href="http://dotavery.com/blog/Rss.aspx">James</a> for the suggestion.
+<br /></div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/02/referencing-exe-assemblies-in-vsnet.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Robust code</h2>
+  <div class="meta">February 3, 2005</div>
+  <div class="tags"><span class="tag">programming</span></div>
+  <div class="body">Trying to get people to stop hard coding expected results in tests is not easy.
+<br /><pre>
+<br />    IList rowList = db.GetSomeRows()
+<br />    Assert.Equals(4, rowList.Count);
+<br /></pre>
+<br />EEEEEEkkkkkkk
+<br /><pre>
+<br />    Code is like poetry
+<br />    blowing in the wind,
+<br />    beaten from left and right
+<br />    crashed and regularly skinned,
+<br />    choose the best of parchment
+<br />    to ward against the eternal din.
+<br /></pre></div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/02/robust-code.html">Original post &rarr;</a></div>
+</article>
+<article class="post">
+  <h2>Recap CinNug meeting 1/18/2005</h2>
+  <div class="meta">January 19, 2005</div>
+  <div class="tags"><span class="tag">.net</span></div>
+  <div class="body">CinNug - http://www.cinnug.com/.
+<br />
+<br />This was a Microsoft product pitch for Team System by Alex Lowe who runs with the title Developer Evangelist. He made a point of apologizing for his title at the beginning.
+<br />
+<br />To be released in the second half of the year sometime, this solution includes a Team Server and three possible client options, Team Architect, Team Developer and Team Test. Each offers extensions to Visual Studio 2005 which is due for release in the middle of the year.
+<br />
+<br />The target market is the enterprise development team so cost will be high.  Alex kept comparing it with the Rational target market. He mentioned that MS would beat their price by 20% but that we should not do a feature for feature comparison since they are very different products. MSDN Universal owners will have a license for one of the three client options but would have to by Team Server anyway. It is not clear which of the client features require Team Server to operate.
+<br />
+<br />The idea behind this solution is to establish a standard framework from which teams can manage their projects.  Apparently MS is starting to use the product internally but so little of it is working at the moment there is little internal feedback. It is their intention to completely adopt this development framework within the next 5 years.
+<br />
+<br />Disclaimer 1: I have never used Whidbey or Team System so this write-up is probably filled with assumptions. I am copying Alex so he can correct us if he feels like it.
+<br />
+<br />Disclaimer 2: I am also a long time java developer with perhaps 4 months of full time .Net work under my belt so please forgive any ignorance based bias. With years of VC++ and ASP development I have some background but java swept me off my feet many years ago.
+<br />
+<br />So into the new features of Team System.
+<br />
+<br />Team Architect contains a design diagramming tool replacing the use of Visio for class diagrams.  Alex talked about the MS's preference for Domain Specific Languages (DSL) as opposed to the standards based UML syntax. He explained that customers are more likely to understand a language that uses the terms and shapes that they are familiar with.
+<br />
+<br />The demo included a class diagram which showed up in non-UML format. Though we only saw two classes, one that inherited from the other, the inheritance arrow was UML like but the class boxes had rounded corners and contained non-UML sections and verbiage. I am all in favor of DSL's when they best represent the subject you are communicating but developers understand classes and I would wager most understand or at least have seen UML so why go non-standard for class diagrams?
+<br />
+<br />The class diagramming tool included two way dynamic code synchronization so we you add to your diagram the code is being written and as you edit your code the diagram is being updated.
+<br />
+<br />To my mind the biggest problem with class diagrams of larger systems is complexity so the selling points of a class diagramming tool should be the filters that can be applied to simplify the representation. Unfortunately we didn't see any of that.
+<br />
+<br />Enhancements to VSS improve performance, scalability and offer new features like "shelving" which allows you to check your code into a new branch so that you don't pollute the main branch with your failing tests until you are ready. Since VSS already supported branching I assume all they have done is to make it easier to do and given it a fancy name.
+<br />
+<br />Most significant improvement to VSS is that you can integrate with it remotely over HTTP so it can finally be used outside a LAN. While I love CVS, it would be better if we could use a source control system that integrated into VS.
+<br />
+<br />Alex presented the unit test features that allow you to select the classes and methods to create tests for. Team Developer produced NUnit like code to exercise them. Not just test stubs but completed methods with some best guess code in them. This months .Net Developers Journal discusses the same feature with the similar screen shots in Whidbey which will be Visual Studio 2005 so I presume that there is some overlap in these products.
+<br />
+<br />Notice I said "NUnit like". Microsoft has changed the "attributes" that you use to tag the classes and methods that are exercised as tests. NUnit uses "TestFixture" and "Test" but the new MS unit test integration uses "TestClass" and "TestMethod". I view this as a change in standard names that are out in the industry and is completely untenable.
+<br />
+<br />Imagine a 100 developer team with 1000's of NUnit tests thinking about migrating to VS.Net 2005. I would lay money of the fact that no admin is going upgrade 100 developer machines in a weekend, the risk would be enormous. So as desktops are upgraded they become unable to run the product test suite. Alex mentioned that a tool would be provided to convert all your existing test cases but you are still leaving a portion of your developer community out of the testing process until they migration is complete.
+<br />
+<br />Code attributes were invented as a way to abstract the code location from class and method names. This can be a fine idea if one wants that abstraction. MS has ignored the industry standard names and is forcing developer shops to build repositories of tests that are dependent on Microsoft testing tools. Choosing to use these new unit test tools is as bad an idea as choosing .Net as a cross platform development strategy. I see myself continuing to use TestDriven as my VS integrated NUnit framework.
+<br />
+<br />The demonstration of test automation went pretty smoothly but I missed asking one question. When Alex entered into the test creation steps a new VS like window opened up with a new view layout targeted on test management, I believe Alex even called it a "Test Manager". From this new "Test Manager" Alex was able to run the tests and we saw the sample test being scheduled, we waited a little and then it was in run state and finally the red/green bar appeared. Alex then exited this new window to get back to the code.
+<br />
+<br />This UI will impact the way test first developers work because it introduces a time and complexity barrier between your fingers in the code and the red/green bar of feedback. This will reduce the number of times tests get run which is contrary to the goals of test first development.
+<br />
+<br />One of the major reasons that JUnit, NUnit and all the other XUnit frameworks work so well is that they are ultra simple to use. With IDE integration the single click to run a test is a really important feature. I think MS missed the boat on this one.
+<br />
+<br />---------------------------------
+<br />By the way Alex, you mentioned that test first required writing tests before the code. You should rephrase that as "writing the tests while writing the code". The process requires that a single, simple test is written before code is written and when the test passes, another is written. Think really small cycles like 60 seconds or so.
+<br />---------------------------------
+<br />
+<br />Team System has an integrated build and deploy process. Not much was said about it but a short demo showed the creation of a diagram that you can add IIS server definitions to, then you can drag your Web Projects into your diagram to deploy them.
+<br />
+<br />Since best practice suggests isolating your build and deploy tools from your IDE this may not be a good solution. However, I didn't ask the question, and Alex didn't say whether the build/deploy tools could or could not be used from outside the IDE or whether an IDE deployment/license would be necessary to run them. It strikes me as insane to require a VS IDE on a build server. We need nant integration please. Then we can plug-in it into our CruiseControl.Net environment without a care in the world.
+<br />
+<br />When you create a project you have the option to select a "profile" which is allows you to chose MSF Agile methodology (the only one available at the moment) which sets up your project with the "standard set of documentation required". I think they missed the point of agile if they think it requires any documentation. Anyway, I guess we can say that they are thinking about the concept anyway. Alex also mentioned that we will be able to set out own standard profiles to help with company standardization.
+<br />
+<br />Alex admitted that the product was pretty shaky but promised performance improvements before its release date. Advertised release dates are in question and Team System will probably be released after the VS 2005 which it is targeted to integrate with.
+<br />
+<br />Conclusion
+<br />----------------
+<br />Team System allows us to integrate the management of design, source code control, testing and deployment as well as bug tracking and reporting. This is a really good thing for development teams.
+<br />
+<br />The architecture of Team System appears to be completely MS centric which could work for pure MS shops. Alex even mentioned that Team Server only works with the packaged SQL server and they have already received feedback from Oracle shops about having to support another database.
+<br />
+<br />I look forward to trying it out when it is available.
+<br />
+<br />Thanks to Alex for a good presentation.
+<br />
+<br />Additional References
+<br />--------------------------------
+<br />
+<br />Microsoft product page
+<br />
+<br />http://lab.msdn.microsoft.com/vs2005/teamsystem/
+<br />
+<br />The .Net Developer Journal story on Team Developer:
+<br />
+<br />http://sys-con.com/story/?storyid=47759&DE=1
+<br />
+<br />If you have a subscription you can see the story on Team Test:
+<br />
+<br />http://sys-con.com/magazine/?issueid=507&src=false</div>
+  <div class="orig"><a href="https://esumerfield.blogspot.com/2005/01/recap-cinnug-meeting-1182005.html">Original post &rarr;</a></div>
+</article>
+  </main>
+  <footer>BitBasher blog, moved over from Blogspot. Built by hand.</footer>
+</body>
+</html>
