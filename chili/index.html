@@ -14,11 +14,12 @@
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--txt);
        font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .topbar{max-width:56rem;margin:0 auto;padding:1.1rem 1.2rem 0}
+  .topbar .back{color:var(--faint);text-decoration:none;font-size:.9rem}
+  .topbar .back:hover{color:var(--txt)}
   .banner{background:radial-gradient(900px 420px at 50% -10%,#3a2413 0%,#1c130b 55%,#14100c 100%);
           border-bottom:1px solid var(--line);
           padding:2.6rem 1.2rem 2rem;text-align:center}
-  .banner a.back{display:inline-block;margin-bottom:.6rem;color:var(--faint);text-decoration:none;font-size:.9rem}
-  .banner a.back:hover{color:var(--txt)}
   .banner h1{margin:.3rem 0 .3rem;font-size:clamp(1.8rem,5vw,2.6rem)}
   .banner p{color:var(--dim);margin:.3rem auto 0;max-width:32rem}
   main{max-width:56rem;margin:0 auto;padding:2rem 1.2rem 4rem}
@@ -35,8 +36,8 @@
 </style>
 </head>
 <body>
+  <div class="topbar"><a class="back" href="../index.html">← Home</a></div>
   <div class="banner">
-    <a class="back" href="../index.html">← Home</a>
     <h1>🌶️ Chili</h1>
     <p>One tile per recipe. Pick your fighter.</p>
   </div>
