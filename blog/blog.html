@@ -53,43 +53,17 @@
     <div class="kicker">ai.bitbashers.org</div>
     <h1>Blog<span class="dot">.</span></h1>
     <p>BitBasher — Ed&#x27;s musings on programming, agile, and life.</p>
-    <div class="date">2021 posts</div>
+    <div class="date">2026 posts</div>
   </div>
   <main>
-    <nav class="years"><a class="now" href="blog.html">2021</a><a href="blog-2018.html">2018</a><a href="blog-2016.html">2016</a><a href="blog-2015.html">2015</a><a href="blog-2013.html">2013</a><a href="blog-2012.html">2012</a><a href="blog-2010.html">2010</a><a href="blog-2009.html">2009</a><a href="blog-2008.html">2008</a><a href="blog-2007.html">2007</a><a href="blog-2006.html">2006</a><a href="blog-2005.html">2005</a><a href="blog-2004.html">2004</a></nav><article class="post">
-  <h2>To THIS or not to THIS</h2>
-  <div class="meta">February 11, 2021</div>
-  
-  <div class="body"><div>A classes methods can often reference its instance state or accept values as parameters. When should we use one technique vs the other?</div><div><br /></div><div>If you think of an object lifecycle as starting, control, transformation methods. Constructors for starting, all public methods are control methods and private may be transformation methods.</div>
-
-<div><br /></div><b>Principle</b>: Encourage pure functions, discourage object state.<div><br /></div>
-
-<div><b>Rule 1:</b></div><div><br /></div><div>If the method it initializing an object then reference the object properties.&nbsp;</div><div><br /></div><div>
-  
-<blockquote>func (x X) init() {
-  x.foo = 1
-}</blockquote>
-
-</div><div><br /></div><div><b>Rule 2:</b></div><div><br /></div><div>If the method is coordinating a request to the object then use the object properties. All methods that coordinate the operations performed on state are control methods.</div><div><blockquote>
-func (x X) Control() {
-    makeAChange(x.foo); return x.foo
-}
-</blockquote>
-
-<b>Rule 3:</b></div>
-
-<div><br /></div><div>If the method is changing an objects state only use parameters.
-
-Methods that change state should be simple to test and lend themselves to refactoring to other classes. These are usually private methods.
-
-<blockquote>
-func (_ X) makeAChange(foo) {
-    return foo + 1
-}
-</blockquote>
-  
-</div>
-
+    <nav class="years"><a class="now" href="blog.html">2026</a><a href="blog-2021.html">2021</a><a href="blog-2018.html">2018</a><a href="blog-2016.html">2016</a><a href="blog-2015.html">2015</a><a href="blog-2013.html">2013</a><a href="blog-2012.html">2012</a><a href="blog-2010.html">2010</a><a href="blog-2009.html">2009</a><a href="blog-2008.html">2008</a><a href="blog-2007.html">2007</a><a href="blog-2006.html">2006</a><a href="blog-2005.html">2005</a><a href="blog-2004.html">2004</a></nav><article class="post">
+  <h2>Claudette</h2>
+  <div class="meta">November 16, 2026</div>
+  <div class="tags"><span class="tag">ai</span><span class="tag">threejs</span></div>
+  <div class="body"><p>Working through how to make an animated avatar. Turns out it&#x27;s hard, even with Claude.</p>
+<blockquote><a href="https://esumerfd.github.io/claudette">https://esumerfd.github.io/claudette</a></blockquote>
+<p>From an initial drawing I used <a href="https://www.meshy.ai/">Meshy AI</a> to generate a 3D model and, so far, just have it spinning on a page using three.js.</p>
+<p><img src="images/ed-self-portrait.jpg" alt="Ed&#x27;s self portrait, the starting drawing for Claudette" width="993" height="1324"></p>
 </div>
 </article>
   </main>
